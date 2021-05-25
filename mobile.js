@@ -1,6 +1,7 @@
 
 var img="";
 var status  = "";
+object = [];
 function preload(){
 img= loadImage("mobile.jpeg");
 }
@@ -13,13 +14,21 @@ document.getElementById("status").innerHTML="Status: Detecting Objects";
 }
 
 function draw(){
-image(img,0,0,600,600);
-fill("white");
-text("MOBILE PHONE ",200,190);
-noFill();
-stroke("black");
-strokeWeight(3);
-rect(190,170,230,130);
+    image(img,0,0,600,600);
+
+    if(status != ""){
+
+        for(i=0; i<object.length; i++){
+    
+    document.getElementById("status").innerHTML = "Status: Objects Detected";
+    fill("red");
+    percent = floor(object[i].confidence * 100);
+    
+    text(object[i].label+" "+percent+"%",object[i].x+15,object[i].y+15);
+    noFill();
+    stroke("red");
+    rect(object[i].x,object[i].y-50,object[i].width,object[i].height);
+        }}  
 }
 
 function modelLoaded(){
@@ -34,5 +43,7 @@ console.error(error);
     }
     else{
         console.log(results);
+        object=results;
+
     }
 }
